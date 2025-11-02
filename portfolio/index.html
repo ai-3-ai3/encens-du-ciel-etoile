@@ -1,69 +1,134 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio | Encens du ciel Étoile</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ポートフォリオ | Encens du ciel Étoile / 夢酔荘</title>
+
   <style>
+    :root{
+      --bg-start:#0b2230;
+      --bg-end:#0a1a26;
+      --text:#eef4f8;
+      --muted:#b9c7d3;
+      --accent:#9ad4ff;
+      --card-bg:rgba(255,255,255,0.08);
+      --card-border:rgba(255,255,255,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
-      font-family: "Hiragino Kaku Gothic ProN", sans-serif;
-      background: linear-gradient(180deg, #000814, #001d3d);
-      color: #fff;
-      text-align: center;
-      padding: 60px 20px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 50% -100px, var(--bg-start), var(--bg-end)) fixed;
+      line-height: 1.6;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 40px;
-    }
-
-    .works {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      max-width: 900px;
+    .container {
+      max-width: 940px;
+      padding: 40px 20px 80px;
       margin: 0 auto;
     }
 
-    .work {
-      background: rgba(255,255,255,0.05);
+    h1 {
+      margin: 0 0 24px;
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      letter-spacing: .02em;
+      text-align: center;
+      color: var(--accent);
+    }
+
+    .lead {
+      margin: 0 auto 24px;
+      max-width: 720px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* カード共通 */
+    .works {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 22px 22px;
+      margin: 18px auto;
+      max-width: 820px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18) inset;
+    }
+
+    .works h2 {
+      margin: 0 0 6px;
+      font-size: clamp(20px, 2.6vw, 26px);
+      font-weight: 800;
+    }
+
+    .works p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .works a {
+      display: inline-block;
+      padding: 10px 16px;
       border-radius: 12px;
-      padding: 20px;
-      transition: transform .3s ease, background .3s ease;
-    }
-
-    .work:hover {
-      transform: translateY(-6px);
-      background: rgba(255,255,255,0.1);
-    }
-
-    a {
-      color: #9ad4ff;
       text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .02em;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--text);
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
     }
+
+    .works a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.16);
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    }
+
+    /* レイアウト間の余白調整（最初のカードはやや大きめ） */
+    .works:first-of-type { margin-top: 26px; }
+
+    /* 小さめ端末での余白最適化 */
+    @media (max-width: 520px) {
+      .container { padding: 28px 16px 56px; }
+      .works { padding: 18px 16px; }
+    }
+
+    /* 既存のリンク直載せ用（もし残っていても邪魔しないよう軽く調整） */
+    .work-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .work-link a:hover { text-decoration: underline; }
   </style>
 </head>
+
 <body>
-  <h1>ポートフォリオ</h1>
-<!-- 夢酔荘カード -->
-<div class="works">
-  <h2>夢酔荘</h2>
-  <p>「静けさ×灯り」をテーマにした和モダン旅館LP。余白と縦書きアクセントで落ち着きと趣を表現。</p>
-  <a href="https://ai-3-ai3.github.io/yumesuisou/" target="_blank" rel="noopener">
-    ページを開く
-  </a>
-</div>
+  <main class="container">
+    <h1>ポートフォリオ</h1>
+    <p class="lead">制作したランディングページの一覧です。カードをクリックして公開サイトへどうぞ。</p>
 
-<!-- 既存の Encens du ciel Étoile カード（下に置く） -->
-<div class="works">
-  <h2>Encens du ciel Étoile</h2>
-  <p>静かな夜に寄り添うジンブランドLP</p>
-  <a href="https://ai-3-ai3.github.io/encens-du-ciel-etoile/" target="_blank" rel="noopener">
-    ページを開く
-  </a>
-</div>
+    <!-- 夢酔荘（最上段） -->
+    <section class="works">
+      <h2>🏮 夢酔荘</h2>
+      <p>「静けさ×灯り」をテーマにした和モダン旅館LP。余白と縦書きアクセントで落ち着きと趣を表現。宿の情緒を感じる一枚構成のデザイン。</p>
+      <a href="https://ai-3-ai3.github.io/yumesuisou/" target="_blank" rel="noopener">ページを開く</a>
+    </section>
 
+    <!-- Encens du ciel Étoile（下段） -->
+    <section class="works">
+      <h2>🌙 Encens du ciel Étoile</h2>
+      <p>静かな夜に寄り添うジンブランドLP</p>
+      <a href="https://ai-3-ai3.github.io/encens-du-ciel-etoile/" target="_blank" rel="noopener">ページを開く</a>
+    </section>
+  </main>
 </body>
 </html>
