@@ -1,0 +1,688 @@
+@charset "utf-8";
+/* CSS Document */
+/* ぜんぶの要素の余白リセット＆レイアウト安定 */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+/* 文字と全体の基本 */
+/* body の背景だけ置き換え */
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.7;
+  color: #fff;
+
+  /* 星空の背景をループ */
+  background: 
+    linear-gradient(180deg, rgba(11,19,36,0.8), rgba(11,19,36,0) 200px),
+    linear-gradient(0deg, rgba(11,19,36,0.8), rgba(11,19,36,0) 200px),
+    #0b1324 url("../images/top.webp.webp") center top / 100% auto repeat-y;
+  background-attachment: scroll;
+}
+ /* ヘッダーの高さを変数で管理 */
+:root { --header-h: 72px; }
+
+/* ===== ヘッダーとナビ（PC基準の完成版）===== */
+
+/* 固定ヘッダー */
+.site-header{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0));
+  backdrop-filter: blur(4px);
+  color: #fff;
+}
+
+/* ヘッダーの中身を左右に並べる */
+.site-header .inner{
+  width: min(1200px, 92vw);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  position: relative; /* ハンバーガーのabsolute基準になる */
+}
+
+/* ロゴ */
+.site-header .logo{
+  font-size: 18px;
+  margin: 0;
+  color:#fff;
+}
+
+/* ←ここ新しく増えるやつ。PCのときナビを横並びにする役 */
+.site-nav{
+  display: flex;
+  align-items: center;
+}
+
+/* ナビ内のリンク */
+.site-header .site-nav a{
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 14px;
+}
+.site-header .site-nav a:hover{
+  opacity: .8;
+}
+
+/* ハンバーガー本体 */
+.nav-toggle {
+  display: none; /* PCでは非表示、スマホでは@mediaでdisplay:flexにしてるのでOK */
+  flex-direction: column;
+  justify-content: center;      /* 真ん中寄せ */
+  align-items: center;
+  width: 28px;
+  height: 28px;                 /* ちょっと正方形にすると押しやすい＆回転きれい */
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+/* 3本線 */
+.nav-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(0,0,0,.8);
+  transition: transform .3s ease, opacity .3s ease;
+  transform-origin: center center;
+  position: relative;
+}
+
+/* 3本を上下に並べる（縦の位置だけズラす） */
+.nav-toggle span:nth-child(1) { transform: translateY(-7px); }
+.nav-toggle span:nth-child(2) { transform: translateY(0);    }
+.nav-toggle span:nth-child(3) { transform: translateY(7px);  }
+
+/* active：Xの形に */
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(0);
+}
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(0);
+}
+
+/* ヘッダーの分だけ本文を下げる（かぶり防止） */
+body{
+  padding-top: var(--header-h);
+}
+
+/* スムーススクロール（お好み） */
+html{ scroll-behavior: smooth; }
+
+.hero{
+  display:flex;
+  justify-content:center;/*横中央*/
+  align-items:center; /*縦中央*/
+  min-height: 100vh; /* 画面いっぱいの高さ */
+  padding:0;
+}
+
+.card-area {
+  position: relative;
+  width: min(90vw, 900px);   /* 横幅は今のままでOK */
+  max-height: 85vh;          /* 画面の85%までに制限（これ追加） */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-bg {
+  width: 100%;
+  height: auto;
+  max-height: 100vh;          /* ←これで縦の制限をかける */
+  display: block;
+  object-fit: contain;       /* 比率を保って全体を収める */
+}
+
+/* ===== Product ===== */
+#product { position: relative; }  /* 瓶の基準にする */
+
+.product{
+  padding: clamp(40px, 6vh, 120px) 16px;
+}
+
+/* 2カラムのレイアウトを安定させる */
+.product__inner{
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(420px, 1.1fr) minmax(360px, 0.9fr);
+  column-gap: clamp(20px, 4vw, 40px);
+  align-items: flex-start; /* ← カードと瓶の「肩」を上でそろえる基本 */
+}
+
+/* === Product: ガラスカード（テキスト側） === */
+.product__copy {
+  max-width: 520px; /* 横幅をある程度そろえることで改行を安定させる */
+  padding: 24px;
+  color: #f7fbff;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.28);
+
+  /* ← カードの上下位置の微調整（瓶と肩を合わせたいとき） */
+  position: relative;
+  top: 0px;  /* -40pxでちょい持ち上げる。左右のPCで様子見して調整してOK */
+}
+
+/* 瓶側カラム */
+.product__media{
+  display: flex;
+  align-items: flex-start;     /* 瓶の“肩”をカードの上と合わせたいから上揃え */
+  justify-content: flex-start; /* 左寄せ */
+}
+
+/* ボトル画像本体 */
+.product__bottle{
+  height: clamp(420px, 50vw, 750px); /* ← デスクトップでも小さくなりすぎないように上限大きめ */
+  width: auto;
+  margin: 0;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,.35));
+  pointer-events: none;
+  transform: translateX(-8px); /* ちょい左に寄せたいなら残す。気にならなければ0でもOK */
+  position: relative;
+  top: 0; /* ← -150pxは消す。ズレの原因になるから一回リセット */
+}
+
+/* タイトル・本文・箇条書き */
+.product__title{
+  margin: 0 0 8px;
+  font-size: clamp(22px, 3vw, 32px);
+  letter-spacing: .04em;
+  color: #fff;
+}
+
+.product__lead{
+  margin: 0 0 20px;
+  color: #e9eef6;
+}
+
+.product__points{
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  color: #cfd8e6;
+}
+
+.product__points li{
+  position: relative;
+  padding-left: 1.2em;
+  margin: .35em 0;
+}
+
+.product__points li::before{
+  content: "✦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .8;
+}
+
+/* CTAボタン行：PCは横並び、スマホはあとで縦並びに切り替え */
+.product__ctas{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: nowrap; /* PCでは折り返さない */
+  margin-top: 10px;
+}
+
+.product__ctas .btn{
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* === Buttons === */
+.product .btn,
+.product .btn:link,
+.product .btn:visited{
+  display:inline-block;
+  text-decoration:none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing:.02em;
+  color:#fff;
+  transition: transform .12s ease, opacity .12s ease;
+}
+
+.product .btn:hover{
+  transform: translateY(-1px);
+  opacity:.95;
+}
+
+.product .btn--primary{
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.35);
+  backdrop-filter: blur(3px);
+  color:#fff;
+}
+
+.product .btn--ghost{
+  border:1px solid rgba(255,255,255,.25);
+  color:#fff;
+}
+
+/* スライド */
+.recipe-slider .slide{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .6s ease;
+  pointer-events: none;
+  background: rgba(0,0,0,.02);
+}
+.recipe-slider .slide.is-active{
+  opacity: 1;
+  pointer-events: auto;
+}
+.recipe-slider img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* 全面にフィット（余白が出るなら contain に） */
+}
+/* ドット */
+.recipe-slider .dots{
+  position: absolute; left: 50%; bottom: 10px;
+  transform: translateX(-50%);
+  display: flex; gap: 8px;
+}
+.recipe-slider .dots button{
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 0; background: rgba(255,255,255,.5); cursor: pointer;
+}
+.recipe-slider .dots button.is-active{ background: #fff; }
+
+/* セクションの並び */
+section {
+  padding: 56px 16px;
+  /*border-bottom: 1px dashed #e5e5e5;  /* ワイヤー感を出すための点線 */
+  
+}
+section h2 {
+  max-width: 960px;
+  margin: 0 auto 16px;
+  font-size: 20px;
+  letter-spacing: .04em;
+}
+
+/* 中身の幅をそろえる */
+section > *:not(h2) {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.recipes__title{
+  text-align:center;
+  font-size:18px;
+  letter-spacing:.25em;
+  color:rgba(255,255,255,.65);
+  font-weight:400;
+  margin-bottom:36px;
+  text-transform:uppercase;
+  text-shadow: 0 0 6px rgba(255,255,255,.22);
+}
+.recipes__title span{
+  display:block;
+  font-size:20px;
+  color:#e9d19b;
+  letter-spacing:.3em;
+  margin-bottom:2px;
+}
+
+.recipe-slider {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  /* overflow: hidden; ← これを削除またはコメントアウト！ */
+  overflow: visible; /* 代わりにこちらを追加 */
+  box-shadow: 0 6px 20px rgba(0,0,0,.2);
+}
+
+/* 丸いナビボタン（小さめ＆白矢印） */
+.recipe-slider .nav {
+  position: absolute;
+  top: 52%;
+  transform: translateY(-50%);
+  width: 28px;  /* ← 小さく */
+  height: 28px; /* ← 小さく */
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: rgba(180, 210, 255, 0.7); /* 淡い水色 */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+	color: transparent;        /* ← ボタン内のテキストを透明にする */
+  font-size: 0;              /* ← テキスト幅を潰す */
+  line-height: 0;
+}
+
+/* 矢印の形をCSSで白く描画（黒い文字を消す） */
+.recipe-slider .nav::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid #fff;   /* 白い矢印線 */
+  border-right: 2px solid #fff; /* 白い矢印線 */
+}
+
+.recipe-slider .nav.prev::before {
+  transform: rotate(-135deg); /* ← 左向き */
+}
+.recipe-slider .nav.next::before {
+  transform: rotate(45deg); /* → 右向き */
+}
+
+/* ボタン位置 */
+.recipe-slider .nav.prev { left: 8px; }
+.recipe-slider .nav.next { right: 8px; }
+
+/* hoverアニメーション */
+.recipe-slider .nav:hover {
+  background: rgba(200, 225, 255, 0.95);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+/* ===== Épisode ===== */
+.episode{
+  padding: clamp(72px, 12vh, 140px) 16px;
+}
+.episode__inner{
+  width: min(900px, 92vw);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 40px);
+  color: #f7fbff;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.25);
+  position: relative;
+}
+
+/* 金色の細い飾りライン（上） */
+.episode__inner::before{
+  content:"";
+  position:absolute; left:24px; right:24px; top:18px;
+  height:2px;
+  background: linear-gradient(90deg,#c9a86a,#e9d19b,#c9a86a);
+  opacity:.85;
+  border-radius:2px;
+}
+
+.episode__eyebrow{
+  margin: 6px 0 10px;
+  letter-spacing: .18em;
+  font-size: 12px;
+  color: #e9d19b;  /* ゴールド */
+  text-transform: uppercase;
+}
+.episode__title{
+  margin: 0 0 10px;
+  font-size: clamp(22px,3.2vw,30px);
+  letter-spacing: .04em;
+}
+.episode__text{
+  margin: 0 0 14px;
+  color: #dfe7f5;
+  line-height: 1.9;
+}
+.episode__signature{
+  margin-top: 10px;
+  color: #e9d19b;
+  font-style: italic;
+  text-align: right;
+  letter-spacing: .06em;
+}
+/* CTA ボタン（仮） */
+button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: 1px solid #333;
+  cursor: pointer;
+  border-radius: 6px;
+}
+button:hover { opacity: .85; }
+
+section { scroll-margin-top: var(--header-h); }
+
+/* ===== CTA ===== */
+#cta { scroll-margin-top: var(--header-h); } /* 見出しに被らない用 */
+.cta{
+  padding: clamp(72px, 12vh, 140px) 16px;
+}
+.cta__inner{
+  width: min(900px, 92vw);
+  margin: 0 auto;
+  text-align: center;
+  color: #f7fbff;
+  background: linear-gradient(180deg, 
+	  rgba(255,255,255,.18), 
+	  rgba(255,255,255,.10));
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.25);
+}
+.cta__title{
+  margin: 27px 0 10px;
+  font-size: clamp(22px,3.2vw,30px);
+  letter-spacing: .04em;
+  color:#fff;
+}
+.cta__text{
+  margin: 0 24px 10px;
+  color:#dfe7f5;
+  line-height: 1.9;
+}
+.btn--cta{
+  display:inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: #e9d19b;      /* やわらかゴールド */
+  color: #1a1f2a;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .02em;
+  box-shadow: 0 8px 22px rgba(0,0,0,.25);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+	/*margin-top: 4px;    ボタンの上に余白 */
+  margin-bottom: 8px; /* 下にも少し余白 */
+}
+.btn--cta:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.32);
+  opacity: .95;
+}
+/* ===== Footer（静かな夜の余韻）===== */
+.site-footer {
+  background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(3,5,12,1));
+  text-align: center;
+  padding: 48px 16px 32px;
+  color: #dfe7f5;
+  border-top: 1px solid rgba(255,255,255,.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* かすかな星のきらめき */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 25% 40%, rgba(255,255,255,.06), transparent 60%),
+              radial-gradient(circle at 75% 60%, rgba(255,255,255,.05), transparent 60%);
+  animation: footerStars 10s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes footerStars {
+  from { opacity: .9; }
+  to { opacity: .4; }
+}
+
+.footer__inner {
+  position: relative;
+  z-index: 2;
+}
+
+.footer__brand {
+  font-family: 'Cinzel Decorative', serif; /* 英字ロゴっぽくしたいなら */
+  font-size: clamp(18px, 2vw, 22px);
+  color: #e9d19b; /* ゴールド */
+  margin-bottom: 8px;
+  letter-spacing: .06em;
+}
+
+.footer__copy {
+  font-size: 12px;
+  color: rgba(255,255,255,.6);
+  letter-spacing: .04em;
+}
+
+/* === ガラスカード共通 === */
+.episode__inner,
+.cta__inner,
+.product__copy {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+
+/* PC用（デフォルト） */
+@media (min-width: 769px){
+  .product__copy{ top: 150px; }
+  .nav-toggle{ display: none !important; }  /* ← 念のため !important 付け */
+}
+
+/* ここからスマホ用 */
+@media (max-width:768px){
+
+  :root{ --header-h:60px; }
+
+  .site-header .logo{ font-size:16px; }
+
+  /* スマホではハンバーガーを出す */
+  .nav-toggle{
+    display: flex;            /* ← ここはOK（!importantは付けない） */
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 28px;
+    height: 28px;
+    z-index: 3000;
+    transform: translateY(-50%);
+  }
+
+  /* ===== スマホ用ナビ ===== */
+  .site-nav {
+    position: fixed;
+    top: var(--header-h);
+    left: 0; right: 0;
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 24px;
+    row-gap: 24px;
+    z-index: 2500;
+
+    /* 夜更けの黒グラデーション */
+    background: linear-gradient(
+      180deg,
+      rgba(2, 4, 10, 0.95) 0%,
+      rgba(8, 12, 20, 0.92) 30%,
+      rgba(10, 15, 25, 0.88) 60%,
+      rgba(11, 17, 28, 0.6) 85%,
+      rgba(11, 17, 28, 0.2) 100%
+    );
+    backdrop-filter: blur(8px);
+
+    /* 初期は非表示 */
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity .6s ease, transform .6s ease, visibility .6s ease;
+  }
+
+  .site-nav.active {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .site-nav a {
+    font-size: 18px; letter-spacing: .05em; color: #f7f7f7; text-decoration: none;
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .site-nav a:hover { opacity: .7; transform: translateY(-2px); }
+
+  /* ===== 他セクションのスマホ調整 ===== */
+  .product__inner{ grid-template-columns: 1fr; row-gap: 28px; text-align: center; }
+  .product__media{ justify-content: center; }
+  .product__bottle{ height: clamp(340px, 70vw, 520px); transform: none; }
+  .product__copy{ order:1; margin: 0 0 16px; top: 0 !important; }
+  .product__media{ order:2; }
+  .product__ctas{ flex-direction: column; gap: 10px; }
+
+  .recipe-slider{ max-width: 92vw; }
+  .recipe-slider .nav{ width: 24px; height: 24px; }
+  .recipe-slider .nav::before{ width: 6px; height: 6px; }
+
+  .episode__inner{ padding: 22px; }
+  .cta__inner{ padding: 24px; }
+  .hero{ min-height: calc(100svh - var(--header-h)); }
+  body{ background-attachment: scroll; }
+  .btn, .btn--cta{ min-height: 44px; padding: 12px 22px; }
+  #product, #recipes, #episode, #cta{ scroll-margin-top: var(--header-h); }
+  .recipe-slider img{ object-fit: contain; }
+
+  /* ===== ハンバーガー線のスタイル（スマホ内に閉じ込める） ===== */
+  .nav-toggle {
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    z-index: 3000;
+  }
+  .nav-toggle span{
+    position: absolute; left: 50%; top: 50%;
+    width: 26px; height: 2.5px; background: #fff; border-radius: 2px;
+    box-shadow: 0 0 3px rgba(0,0,0,.6);
+    transform-origin: center; transition: transform .25s ease, opacity .25s ease;
+  }
+  .nav-toggle span:nth-child(1){ transform: translate(-50%, calc(-50% - 7px)); }
+  .nav-toggle span:nth-child(2){ transform: translate(-50%, -50%); }
+  .nav-toggle span:nth-child(3){ transform: translate(-50%, calc(-50% + 7px)); }
+
+  .nav-toggle.active span:nth-child(1){ transform: translate(-50%, -50%) rotate(45deg); }
+  .nav-toggle.active span:nth-child(2){ opacity: 0; }
+  .nav-toggle.active span:nth-child(3){ transform: translate(-50%, -50%) rotate(-45deg); }
+}
+/* ← ここで@media(max-width:768px) を閉じる（この下はPCにも効く） */
