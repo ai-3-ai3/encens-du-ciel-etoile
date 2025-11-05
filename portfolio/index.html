@@ -3,132 +3,179 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ポートフォリオ | Encens du ciel Étoile / 夢酔荘</title>
+  <title>Webギャラリー | 夢酔荘 / Encens du ciel Étoile</title>
 
   <style>
-    :root{
-      --bg-start:#0b2230;
-      --bg-end:#0a1a26;
-      --text:#eef4f8;
-      --muted:#b9c7d3;
-      --accent:#9ad4ff;
-      --card-bg:rgba(255,255,255,0.08);
-      --card-border:rgba(255,255,255,0.12);
+    :root {
+      --bg-main:#f7f4ee;      /* 壁みたいなやわらかい白 */
+      --panel:#ffffff;        /* 作品カード */
+      --border:#e3ddd0;       /* 額縁っぽい線 */
+      --text-main:#333333;
+      --text-muted:#666666;
+      --accent:#c39a4a;       /* ほんのり金色（額縁の金具イメージ） */
     }
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                    "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-      color: var(--text);
-      background: radial-gradient(1200px 700px at 50% -100px, var(--bg-start), var(--bg-end)) fixed;
-      line-height: 1.6;
+      background: radial-gradient(1200px 800px at 50% -200px, #ffffff, var(--bg-main));
+      color: var(--text-main);
+      line-height: 1.7;
     }
 
     .container {
-      max-width: 940px;
-      padding: 40px 20px 80px;
+      max-width: 900px;
       margin: 0 auto;
+      padding: 40px 20px 72px;
     }
 
     h1 {
-      margin: 0 0 24px;
-      font-size: clamp(28px, 3.5vw, 40px);
+      margin: 0;
+      font-size: clamp(26px, 3vw, 34px);
       font-weight: 800;
-      letter-spacing: .02em;
+      letter-spacing: .08em;
       text-align: center;
-      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .sub {
+      margin-top: 4px;
+      font-size: 12px;
+      text-align: center;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .lead {
-      margin: 0 auto 24px;
-      max-width: 720px;
+      margin: 24px auto 32px;
+      max-width: 640px;
       text-align: center;
-      color: var(--muted);
       font-size: 14px;
+      color: var(--text-muted);
     }
 
-    /* カード共通 */
+    /* 展示室全体の枠 */
+    .gallery {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+
+    /* 作品カード（額縁イメージ） */
     .works {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 22px 22px;
+      padding: 18px 22px 20px;
       margin: 18px auto;
-      max-width: 820px;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.18) inset;
+      box-shadow:
+        0 18px 35px rgba(0,0,0,0.06),
+        0 0 0 6px rgba(255,255,255,0.8) inset;
+    }
+
+    .room-label {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 6px;
     }
 
     .works h2 {
       margin: 0 0 6px;
-      font-size: clamp(20px, 2.6vw, 26px);
-      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .works h2 span.icon {
+      font-size: 20px;
     }
 
     .works p {
-      margin: 0 0 14px;
-      color: var(--muted);
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .note {
+      font-size: 12px;
+      color: #888;
     }
 
     .works a {
       display: inline-block;
-      padding: 10px 16px;
-      border-radius: 12px;
+      margin-top: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
       text-decoration: none;
-      font-weight: 700;
-      letter-spacing: .02em;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: var(--text);
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      color: var(--text-main);
+      background: #f5efe1;
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
 
     .works a:hover {
       transform: translateY(-1px);
-      background: rgba(255,255,255,0.16);
-      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      background: #f1e6cf;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
 
-    /* レイアウト間の余白調整（最初のカードはやや大きめ） */
-    .works:first-of-type { margin-top: 26px; }
+    .footer-note {
+      margin-top: 40px;
+      font-size: 12px;
+      text-align: center;
+      color: var(--text-muted);
+    }
 
-    /* 小さめ端末での余白最適化 */
     @media (max-width: 520px) {
-      .container { padding: 28px 16px 56px; }
-      .works { padding: 18px 16px; }
+      .container { padding: 28px 16px 60px; }
+      .works { padding: 16px 16px 18px; }
     }
-
-    /* 既存のリンク直載せ用（もし残っていても邪魔しないよう軽く調整） */
-    .work-link a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .work-link a:hover { text-decoration: underline; }
   </style>
 </head>
 
 <body>
   <main class="container">
-    <h1>ポートフォリオ</h1>
-    <p class="lead">制作したランディングページの一覧です。カードをクリックして公開サイトへどうぞ。</p>
+    <h1>WEB GALLERY</h1>
+    <p class="sub">AI IWAMOTO</p>
 
-    <!-- 夢酔荘（最上段） -->
-    <section class="works">
-      <h2>🏮 夢酔荘</h2>
-      <p>「静けさ×灯り」をテーマにした和モダン旅館LP。余白と縦書きアクセントで落ち着きと趣を表現。宿の情緒を感じる一枚構成のデザイン。</p>
-      <a href="https://ai-3-ai3.github.io/yumesuisou/" target="_blank" rel="noopener">ページを開く</a>
+    <p class="lead">
+      静かな夜・灯り・小さなご褒美をテーマにした、岩本亜依のランディングページ作品を展示しています。<br>
+      気になる作品カードをクリックして、それぞれの「夜の部屋」にお入りください。
+    </p>
+
+    <section class="gallery">
+      <!-- Room 01: 夢酔荘 -->
+      <section class="works">
+        <p class="room-label">ROOM 01</p>
+        <h2><span class="icon">🏮</span>夢酔荘</h2>
+        <p>「静けさ×灯り」をテーマにした和モダン旅館LP。藍色と灯りのコントラストで、夜のしんとした空気を閉じ込めました。</p>
+        <p class="note">制作メモ：写真が少ない分、余白とタイポグラフィで情緒を補うことを意識しています。</p>
+        <a href="https://ai-3-ai3.github.io/yumesuisou/" target="_blank" rel="noopener">作品ページを開く</a>
+      </section>
+
+      <!-- Room 02: Encens du ciel Étoile -->
+      <section class="works">
+        <p class="room-label">ROOM 02</p>
+        <h2><span class="icon">🌙</span>Encens du ciel Étoile</h2>
+        <p>静かな夜に寄り添うジンブランドLP。星空のような背景とカードレイアウトで、1日の終わりの一杯を丁寧に描き出しました。</p>
+        <p class="note">制作メモ：情報量が多くなりすぎないよう、段差のあるカードと余白でリズムをつけています。</p>
+        <a href="https://ai-3-ai3.github.io/encens-du-ciel-etoile/" target="_blank" rel="noopener">作品ページを開く</a>
+      </section>
     </section>
 
-    <!-- Encens du ciel Étoile（下段） -->
-    <section class="works">
-      <h2>🌙 Encens du ciel Étoile</h2>
-      <p>静かな夜に寄り添うジンブランドLP</p>
-      <a href="https://ai-3-ai3.github.io/encens-du-ciel-etoile/" target="_blank" rel="noopener">ページを開く</a>
-    </section>
+    <p class="footer-note">
+      これから増えていく夜の景色も、少しずつこのギャラリーに飾っていく予定です。
+    </p>
   </main>
 </body>
 </html>
